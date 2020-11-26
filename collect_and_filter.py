@@ -2,11 +2,12 @@ import requests
 import json
 import os
 from datetime import datetime
+import time
 
 # CONSTANTS
 num_posts = 333
-subs = ['conservative'] # 'politics', 'conservative'
-categories = ['hot'] # 'hot', 'top', 'controversial'
+subs = ['politics', 'conservative']
+categories = ['hot', 'top', 'controversial']
 output_dir = 'data'
 current_time = datetime.now().strftime("%Y-%m-%d")
 
@@ -47,16 +48,17 @@ def mentions(data):
     title = data['title']
     return True if 'trump' in title.lower() or 'biden' in title.lower() else False
 
-
 def main():
     after = ""
     for i in range(num_posts//100 + 1):
         # iteration i uses `after` returned in iteration i-1
         for sub_name in subs:
             for category in categories:
-                output_file = os.path.join(os.getcwd(), output_dir, f'{current_time}_{sub_name}_{category}.json')
-                filtered_output = os.path.join(os.getcwd(), output_dir, f'{current_time}_{sub_name}_{category}_filtered.json')
+                filename = f'{current_time}_{sub_name}_{category}'
+                output_file = os.path.join(os.getcwd(), output_dir, filename, '.json')
+                filtered_output = os.path.join(os.getcwd(), output_dir, filename, '_filtered.json')
                 after = hit_api(sub_name, category, output_file, mentions, filtered_output, after)
+            time.sleep(61) # sleep to avoid hitting API access limit
 
 if __name__ == '__main__':
     main()
