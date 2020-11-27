@@ -6,12 +6,10 @@ import time
 
 # CONSTANTS
 num_posts = 333
-subs = ['politics', 'conservative']
-categories = ['hot', 'top', 'controversial']
+subs = ['politics']
+categories = ['controversial']
 output_dir = 'data'
 current_time = datetime.now().strftime("%Y-%m-%d")
-
-# then conservative hot
 
 """
 Pull data from Reddit API, given:
@@ -50,15 +48,14 @@ def mentions(data):
 
 def main():
     after = ""
-    for i in range(num_posts//100 + 1):
+    for i in range(4):
         # iteration i uses `after` returned in iteration i-1
         for sub_name in subs:
             for category in categories:
                 filename = f'{current_time}_{sub_name}_{category}'
-                output_file = os.path.join(os.getcwd(), output_dir, filename, '.json')
-                filtered_output = os.path.join(os.getcwd(), output_dir, filename, '_filtered.json')
+                output_file = os.path.join(os.getcwd(), output_dir, f'{filename}.json')
+                filtered_output = os.path.join(os.getcwd(), output_dir, f'{filename}_filtered.json')
                 after = hit_api(sub_name, category, output_file, mentions, filtered_output, after)
-            time.sleep(61) # sleep to avoid hitting API access limit
 
 if __name__ == '__main__':
     main()
