@@ -6,7 +6,7 @@ import time
 
 # CONSTANTS
 num_posts = 333
-subs = ['politics']
+subs = ['conservative']
 categories = ['controversial']
 output_dir = 'data'
 current_time = datetime.now().strftime("%Y-%m-%d")
